@@ -4,7 +4,6 @@ import Link from 'next/link'
 import type { Product } from '@commerce/types'
 import s from './ProductCard.module.css'
 import Image, { ImageProps } from 'next/image'
-import WishlistButton from '@components/wishlist/WishlistButton'
 
 interface Props {
   className?: string
@@ -24,7 +23,7 @@ const ProductCard: FC<Props> = ({
 }) => (
   <Link href={`/product/${product.slug}`} {...props}>
     <a className={cn(s.root, { [s.simple]: variant === 'simple' }, className)}>
-      {variant === 'slim' ? (
+      {/* {variant === 'slim' ? (
         <div className="relative overflow-hidden box-border">
           <div className="absolute inset-0 flex items-center justify-end mr-8 z-20">
             <span className="bg-black text-white inline-block p-3 font-bold text-xl break-words">
@@ -57,13 +56,6 @@ const ProductCard: FC<Props> = ({
                 {product.price.currencyCode}
               </span>
             </div>
-            {process.env.COMMERCE_WISHLIST_ENABLED && (
-              <WishlistButton
-                className={s.wishlistButton}
-                productId={product.id}
-                variant={product.variants[0] as any}
-              />
-            )}
           </div>
           <div className={s.imageContainer}>
             {product?.images && (
@@ -80,7 +72,30 @@ const ProductCard: FC<Props> = ({
             )}
           </div>
         </>
-      )}
+      )} */}
+      <>
+        <div className="border border-black">
+          <div className={s.imageContainer}>
+            {product?.images && (
+              <Image
+                alt={product.name || 'Product Image'}
+                src={product.images[0].url || placeholderImg}
+                quality="85"
+                layout="responsive"
+                {...imgProps}
+              />
+            )}
+          </div>
+          <div className="flex">
+            <span className="border-t border-r border-black font-bold flex-1 p-4 truncate overflow-ellipsis">
+              {product.name}
+            </span>
+            <span className="border-t border-black font-bold p-4 flex items-center">
+              ${product.price.value}
+            </span>
+          </div>
+        </div>
+      </>
     </a>
   </Link>
 )
